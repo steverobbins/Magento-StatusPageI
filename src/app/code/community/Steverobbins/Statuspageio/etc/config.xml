@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * StatusPage.io Integration
+ *
+ * @category  Steverobbins
+ * @package   Steverobbins_Statuspageio
+ * @author    Steve Robbins <steve@steverobbins.com>
+ * @copyright Copyright 2015 Steve Robbins (http://steverobbins.com)
+ * @license   http://creativecommons.org/licenses/by/3.0/deed.en_US Creative Commons Attribution 3.0 Unported License
+ */
+-->
+<config>
+    <modules>
+        <Steverobbins_Statuspageio>
+            <version>1.0.0</version>
+        </Steverobbins_Statuspageio>
+    </modules>
+    <global>
+        <helpers>
+            <steverobbins_statuspageio>
+                <class>Steverobbins_Statuspageio_Helper</class>
+            </steverobbins_statuspageio>
+        </helpers>
+        <models>
+            <steverobbins_statuspageio>
+                <class>Steverobbins_Statuspageio_Model</class>
+                <resourceModel>steverobbins_statuspageio_resource</resourceModel>
+            </steverobbins_statuspageio>
+            <steverobbins_statuspageio_resource>
+                <class>Steverobbins_Statuspageio_Model_Resource</class>
+                <entities>
+                    <event>
+                        <table>steverobbins_statuspageio_event</table>
+                    </event>
+                </entities>
+            </steverobbins_statuspageio_resource>
+        </models>
+        <resources>
+            <steverobbins_statuspageio_setup>
+                <setup>
+                    <module>Steverobbins_Statuspageio</module>
+                </setup>
+            </steverobbins_statuspageio_setup>
+        </resources>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <steverobbins_statuspageio>
+                        <class>steverobbins_statuspageio/observer</class>
+                        <method>orderPlaceAfter</method>
+                    </steverobbins_statuspageio>
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </global>
+    <default>
+        <steverobbins_statuspageio>
+            <settings>
+                <log_level>4</log_level>
+                <api_url>https://api.statuspage.io/v1/</api_url>
+                <api_key backend_model="adminhtml/system_config_backend_encrypted" />
+            </settings>
+        </steverobbins_statuspageio>
+    </default>
+    <crontab>
+        <jobs>
+            <steverobbins_statuspageio_process>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>steverobbins_statuspageio/cron::process</model>
+                </run>
+            </steverobbins_statuspageio_process>
+        </jobs>
+    </crontab>
+</config>
